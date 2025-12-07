@@ -4,14 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Winter Break Calendar</title>
+
   <style>
     body {
       font-family: 'Arial', sans-serif;
       margin: 0;
-      background: #0d0d0d;
+      background: #0d0d0d; 
       color: #e6e6e6;
       position: relative;
     }
+
     header {
       background: linear-gradient(90deg, #b30000, #ff1a1a);
       color: white;
@@ -24,14 +26,14 @@
       position: relative;
       z-index: 2;
     }
+
     .calendar {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       padding: 20px;
       gap: 10px;
-      position: relative;
-      z-index: 2;
     }
+
     .day {
       background: #1a1a1a;
       padding: 18px;
@@ -42,12 +44,15 @@
       transition: 0.25s ease;
       color: #fff;
       border: 1px solid #330000;
+      font-size: 15px;
     }
+
     .day:hover {
       background: #260000;
       transform: scale(1.05);
       box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
     }
+
     #popup {
       position: fixed;
       top: 50%;
@@ -63,11 +68,13 @@
       border: 1px solid #660000;
       z-index: 9999;
     }
+
     #popup h2 {
       margin-top: 0;
       font-size: 22px;
       color: #ff3333;
     }
+
     #closeBtn {
       margin-top: 15px;
       background: linear-gradient(45deg, #b30000, #ff1a1a);
@@ -83,107 +90,83 @@
     }
   </style>
 </head>
+
 <body>
-  <header>Winter Break Calendar</header>
 
-  <div class="calendar" id="calendar"></div>
+<header>Winter Break Calendar</header>
 
-  <div id="popup">
-    <h2 id="popupDate"></h2>
-    <p><strong>People in town:</strong></p>
-    <p id="popupNames">TBD</p>
-    <p><strong>Day's Plan:</strong></p>
-    <p id="popupPlan">TBA</p>
-    <button id="closeBtn">Close</button>
-  </div>
+<div class="calendar" id="calendar"></div>
 
-  <script>
-    const start = new Date("2024-12-12");
-    const end   = new Date("2025-01-11");
-    const calendar = document.getElementById("calendar");
+<div id="popup">
+  <h2 id="popupDate"></h2>
+  <p><strong>People in town:</strong></p>
+  <p id="popupNames"></p>
+  <p><strong>Day's Plan:</strong></p>
+  <p id="popupPlan"></p>
+  <button id="closeBtn">Close</button>
+</div>
 
-    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      const box = document.createElement("div");
-      box.className = "day";
-      box.textContent = d.toDateString().slice(4, 10);
+<script>
 
-      const thisDate = new Date(d);
-      box.onclick = () => openPopup(thisDate);
+  // DATE RANGE
+  const start = new Date("2024-12-12");
+  const end   = new Date("2025-01-11");
+  const calendar = document.getElementById("calendar");
 
-      calendar.appendChild(box);
-    }
+  // BUILD CALENDAR GRID
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    const box = document.createElement("div");
+    box.className = "day";
 
-    const popup = document.getElementById("popup");
-    const popupDate = document.getElementById("popupDate");
-    const popupNames = document.getElementById("popupNames");
-    const popupPlan = document.getElementById("popupPlan");
+    // Show full date label (prevents confusion)
+    const label = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    box.textContent = label;
 
-    const plans = {
-      "2024-12-13": "Coco Friday and BEACH DAY",
-      "2024-12-14": "Reunion Dinner @ Makoto. Jetski Day?",
-      "2024-12-15": "Diddy Day (invite some girls)",
-      "2024-12-16": "Basketball",
-      "2024-12-17": "BBQ @ Oscars, Indoor 9v9",
-      "2024-12-18": "Studio Night. Basketball",
-      "2024-12-19": "Boat Party",
-      "2024-12-20": "Justin's Party + Zonks Fiesta",
-      "2024-12-23": "Movie Monday @ Vendome"
-    };
+    const thisDate = new Date(d);
+    box.onclick = () => openPopup(thisDate);
 
-    const people = [
-      { name: "Pedro", ranges: [["2024-12-12","2024-12-26"]] },
-      { name: "Oscar", ranges: [["2024-12-12","2024-12-21"],["2025-01-04","2025-01-11"]] },
-      { name: "Massimo", ranges: [["2024-12-12","2025-01-11"]] },
-      { name: "Matthew W", ranges: [["2024-12-16","2024-12-19"],["2024-12-26","2025-01-11"]] },
-      { name: "Julian", ranges: [["2024-12-12","2024-12-18"],["2025-01-01","2025-01-04"]] },
-      { name: "John", ranges: [["2024-12-13","2025-01-11"]] },
-      { name: "Noah", ranges: [["2024-12-16","2024-12-23"]] },
-      { name: "Marcus", ranges: [["2024-12-26","2025-01-07"]] },
-      { name: "Santi", ranges: [["2024-12-12","2025-01-11"]] },
-      { name: "Diego", ranges: [["2024-12-12","2024-12-26"],["2025-01-02","2025-01-10"]] },
-      { name: "David F", ranges: [["2024-12-12","2024-12-27"],["2025-01-01","2025-01-05"]] },
-      { name: "Aarin", ranges: [["2024-12-19","2025-01-05"]] },
-      { name: "Lorenzo", ranges: [["2024-12-12","2024-12-26"],["2025-01-02","2025-01-08"]] },
-      { name: "Zonk", ranges: [["2024-12-19","2024-12-27"]] },
-      { name: "Lucas", ranges: [["2024-12-15","2024-12-20"]] },
-      { name: "Leo", ranges: [["2024-12-12","2024-12-18"],["2024-12-21","2025-01-11"]] },
-      { name: "Justin", ranges: [["2024-12-13","2025-01-07"]] }
-    ];
+    calendar.appendChild(box);
+  }
 
-    function getPeople(dateObj) {
-      const dateStr = dateObj.toISOString().slice(0,10);
-      return people
-        .filter(p => p.ranges.some(r => dateStr >= r[0] && dateStr <= r[1]))
-        .map(p => p.name)
-        .join(", ") || "None";
-    }
+  // POPUP ELEMENTS
+  const popup = document.getElementById("popup");
+  const popupDate = document.getElementById("popupDate");
+  const popupNames = document.getElementById("popupNames");
+  const popupPlan = document.getElementById("popupPlan");
 
-    function openPopup(dateObj) {
-      popup.style.display = "block";
-      popupDate.textContent = dateObj.toDateString();
-      popupNames.textContent = getPeople(dateObj);
-      popupPlan.textContent = plans[dateObj.toISOString().slice(0,10)] || "TBA";
-    }
+  // ACTIVITIES
+  const plans = {
+    "2024-12-13": "Coco Friday and BEACH DAY",
+    "2024-12-14": "Reunion Dinner @ Makoto. Jetski Day?",
+    "2024-12-15": "Diddy Day (invite some girls)",
+    "2024-12-16": "Basketball",
+    "2024-12-17": "BBQ @ Oscars, Indoor 9v9",
+    "2024-12-18": "Studio Night. Basketball",
+    "2024-12-19": "Boat Party",
+    "2024-12-20": "Justin's Party + Zonks Fiesta",
+    "2024-12-23": "Movie Monday @ Vendome"
+  };
 
-    document.getElementById("closeBtn").onclick = () => {
-      popup.style.display = "none";
-    };
-  </script>
+  // PEOPLE AVAILABILITY
+  const people = [
+    { name: "Pedro", ranges: [["2024-12-12","2024-12-26"]] },
+    { name: "Oscar", ranges: [["2024-12-12","2024-12-21"],["2025-01-04","2025-01-11"]] },
+    { name: "Massimo", ranges: [["2024-12-12","2025-01-11"]] },
+    { name: "Matthew W", ranges: [["2024-12-16","2024-12-19"],["2024-12-26","2025-01-11"]] },
+    { name: "Julian", ranges: [["2024-12-12","2024-12-18"],["2025-01-01","2025-01-04"]] },
+    { name: "John", ranges: [["2024-12-13","2025-01-11"]] },
+    { name: "Noah", ranges: [["2024-12-16","2024-12-23"]] },
+    { name: "Marcus", ranges: [["2024-12-26","2025-01-07"]] },
+    { name: "Santi", ranges: [["2024-12-12","2025-01-11"]] },
+    { name: "Diego", ranges: [["2024-12-12","2024-12-26"],["2025-01-02","2025-01-10"]] },
+    { name: "David F", ranges: [["2024-12-12","2024-12-27"],["2025-01-01","2025-01-05"]] },
+    { name: "Aarin", ranges: [["2024-12-19","2025-01-05"]] },
+    { name: "Lorenzo", ranges: [["2024-12-12","2024-12-26"],["2025-01-02","2025-01-08"]] },
+    { name: "Zonk", ranges: [["2024-12-19","2024-12-27"]] },
+    { name: "Lucas", ranges: [["2024-12-15","2024-12-20"]] },
+    { name: "Leo", ranges: [["2024-12-12","2024-12-18"],["2024-12-21","2025-01-11"]] },
+    { name: "Justin", ranges: [["2024-12-13","2025-01-07"]] }
+  ];
 
-  <div style="
-    position: fixed;
-    bottom: 5%;
-    right: 5%;
-    font-size: 120px;
-    font-weight: bold;
-    font-family: 'Impact', sans-serif;
-    background: linear-gradient(180deg, #ff3333, #990000);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    opacity: 0.15;
-    user-select: none;
-    z-index: 1;
-  ">ZB</div>
-
-</body>
-</html>
+  function getPeople(dateObj) {
+    const dateStr =
