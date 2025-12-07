@@ -9,7 +9,7 @@
     body {
       font-family: 'Arial', sans-serif;
       margin: 0;
-      background: #0d0d0d; 
+      background: #0d0d0d;
       color: #e6e6e6;
       position: relative;
     }
@@ -62,6 +62,7 @@
       padding: 25px;
       border-radius: 12px;
       width: 340px;
+      max-width: 90vw;
       box-shadow: 0 5px 20px rgba(255,0,0,0.5);
       display: none;
       color: #f2f2f2;
@@ -88,6 +89,27 @@
       font-weight: bold;
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
     }
+
+    /* --- Mobile tweaks --- */
+    @media (max-width: 768px) {
+      header {
+        font-size: 24px;
+        padding: 18px;
+      }
+      .calendar {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 10px;
+        gap: 8px;
+      }
+      .day {
+        padding: 14px;
+        font-size: 13px;
+      }
+      #popup {
+        width: 90vw;
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 
@@ -107,7 +129,6 @@
 </div>
 
 <script>
-
   // DATE RANGE
   const start = new Date("2024-12-12");
   const end   = new Date("2025-01-11");
@@ -118,7 +139,6 @@
     const box = document.createElement("div");
     box.className = "day";
 
-    // Show full date label (prevents confusion)
     const label = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
     box.textContent = label;
 
@@ -169,4 +189,46 @@
   ];
 
   function getPeople(dateObj) {
-    const dateStr =
+    const dateStr = dateObj.toISOString().slice(0,10);
+    return people
+      .filter(p => p.ranges.some(r => dateStr >= r[0] && dateStr <= r[1]))
+      .map(p => p.name)
+      .join(", ") || "No one";
+  }
+
+  function openPopup(dateObj) {
+    popupNames.textContent = "";
+    popupPlan.textContent = "";
+
+    popup.style.display = "block";
+    popupDate.textContent = dateObj.toDateString();
+
+    popupNames.textContent = getPeople(dateObj);
+
+    const key = dateObj.toISOString().slice(0,10);
+    popupPlan.textContent = plans[key] || "TBA";
+  }
+
+  document.getElementById("closeBtn").onclick = () => {
+    popup.style.display = "none";
+  };
+</script>
+
+<!-- ZB Watermark -->
+<div style="
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  font-size: 120px;
+  font-weight: bold;
+  font-family: 'Impact', sans-serif;
+  background: linear-gradient(180deg, #ff3333, #990000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.15;
+  user-select: none;
+  z-index: 1;
+">ZB</div>
+
+</body>
+</html>
