@@ -90,7 +90,7 @@
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
     }
 
-    /* --- Mobile tweaks --- */
+    /* Mobile layout */
     @media (max-width: 768px) {
       header {
         font-size: 24px;
@@ -110,6 +110,21 @@
         padding: 20px;
       }
     }
+
+    /* --- Bottom Left Text Block --- */
+    .bottom-left {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      max-width: 250px;
+      line-height: 1.6;
+    }
   </style>
 </head>
 
@@ -128,10 +143,21 @@
   <button id="closeBtn">Close</button>
 </div>
 
+<!-- Bottom Left Text Block with Events -->
+<div class="bottom-left">
+  <strong>Motion With No Determined Date:</strong><br>
+  Study Sesh<br>
+  Ghoul<br>
+  Menchies (prob everyday)<br>
+  Movie Night<br>
+  Murder Mystery Night<br>
+  Darty
+</div>
+
 <script>
-  // DATE RANGE
-  const start = new Date("2024-12-12");
-  const end   = new Date("2025-01-11");
+  // DATE RANGE (2025–2026 WINTER BREAK)
+  const start = new Date("2025-12-12");
+  const end   = new Date("2026-01-11");
   const calendar = document.getElementById("calendar");
 
   // BUILD CALENDAR GRID
@@ -139,7 +165,7 @@
     const box = document.createElement("div");
     box.className = "day";
 
-    const label = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    const label = d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
     box.textContent = label;
 
     const thisDate = new Date(d);
@@ -154,38 +180,38 @@
   const popupNames = document.getElementById("popupNames");
   const popupPlan = document.getElementById("popupPlan");
 
-  // ACTIVITIES
+  // ACTIVITIES (2025 DATES)
   const plans = {
-    "2024-12-13": "Coco Friday and BEACH DAY",
-    "2024-12-14": "Reunion Dinner @ Makoto. Jetski Day?",
-    "2024-12-15": "Diddy Day (invite some girls)",
-    "2024-12-16": "Basketball",
-    "2024-12-17": "BBQ @ Oscars, Indoor 9v9",
-    "2024-12-18": "Studio Night. Basketball",
-    "2024-12-19": "Boat Party",
-    "2024-12-20": "Justin's Party + Zonks Fiesta",
-    "2024-12-23": "Movie Monday @ Vendome"
+    "2025-12-13": "Coco Friday and BEACH DAY",
+    "2025-12-14": "Reunion Dinner @ Makoto. Jetski Day?",
+    "2025-12-15": "Diddy Day (invite some girls)",
+    "2025-12-16": "Basketball",
+    "2025-12-17": "BBQ @ Oscars, Indoor 9v9",
+    "2025-12-18": "Studio Night. Basketball",
+    "2025-12-19": "Boat Party",
+    "2025-12-20": "Justin's Party + Zonks Fiesta",
+    "2025-12-23": "Movie Monday @ Vendome"
   };
 
-  // PEOPLE AVAILABILITY
+  // PEOPLE AVAILABILITY (2025–2026)
   const people = [
-    { name: "Pedro", ranges: [["2024-12-12","2024-12-26"]] },
-    { name: "Oscar", ranges: [["2024-12-12","2024-12-21"],["2025-01-04","2025-01-11"]] },
-    { name: "Massimo", ranges: [["2024-12-12","2025-01-11"]] },
-    { name: "Matthew W", ranges: [["2024-12-16","2024-12-19"],["2024-12-26","2025-01-11"]] },
-    { name: "Julian", ranges: [["2024-12-12","2024-12-18"],["2025-01-01","2025-01-04"]] },
-    { name: "John", ranges: [["2024-12-13","2025-01-11"]] },
-    { name: "Noah", ranges: [["2024-12-16","2024-12-23"]] },
-    { name: "Marcus", ranges: [["2024-12-26","2025-01-07"]] },
-    { name: "Santi", ranges: [["2024-12-12","2025-01-11"]] },
-    { name: "Diego", ranges: [["2024-12-12","2024-12-26"],["2025-01-02","2025-01-10"]] },
-    { name: "David F", ranges: [["2024-12-12","2024-12-27"],["2025-01-01","2025-01-05"]] },
-    { name: "Aarin", ranges: [["2024-12-19","2025-01-05"]] },
-    { name: "Lorenzo", ranges: [["2024-12-12","2024-12-26"],["2025-01-02","2025-01-08"]] },
-    { name: "Zonk", ranges: [["2024-12-19","2024-12-27"]] },
-    { name: "Lucas", ranges: [["2024-12-15","2024-12-20"]] },
-    { name: "Leo", ranges: [["2024-12-12","2024-12-18"],["2024-12-21","2025-01-11"]] },
-    { name: "Justin", ranges: [["2024-12-13","2025-01-07"]] }
+    { name: "Pedro",   ranges: [["2025-12-12","2025-12-26"]] },
+    { name: "Oscar",   ranges: [["2025-12-12","2025-12-21"],["2026-01-04","2026-01-11"]] },
+    { name: "Massimo", ranges: [["2025-12-12","2026-01-11"]] },
+    { name: "Matthew W", ranges: [["2025-12-16","2025-12-19"],["2025-12-26","2026-01-11"]] },
+    { name: "Julian",  ranges: [["2025-12-12","2025-12-18"],["2026-01-01","2026-01-04"]] },
+    { name: "John",    ranges: [["2025-12-13","2026-01-11"]] },
+    { name: "Noah",    ranges: [["2025-12-16","2025-12-23"]] },
+    { name: "Marcus",  ranges: [["2025-12-26","2026-01-07"]] },
+    { name: "Santi",   ranges: [["2025-12-12","2026-01-11"]] },
+    { name: "Diego",   ranges: [["2025-12-12","2025-12-26"],["2026-01-02","2026-01-10"]] },
+    { name: "David F", ranges: [["2025-12-12","2025-12-27"],["2026-01-01","2026-01-05"]] },
+    { name: "Aarin",   ranges: [["2025-12-19","2026-01-05"]] },
+    { name: "Lorenzo", ranges: [["2025-12-12","2025-12-26"],["2026-01-02","2026-01-08"]] },
+    { name: "Zonk",    ranges: [["2025-12-19","2025-12-27"]] },
+    { name: "Lucas",   ranges: [["2025-12-15","2025-12-20"]] },
+    { name: "Leo",     ranges: [["2025-12-12","2025-12-18"],["2025-12-21","2026-01-11"]] },
+    { name: "Justin",  ranges: [["2025-12-13","2026-01-07"]] }
   ];
 
   function getPeople(dateObj) {
@@ -201,7 +227,7 @@
     popupPlan.textContent = "";
 
     popup.style.display = "block";
-    popupDate.textContent = dateObj.toDateString();
+    popupDate.textContent = dateObj.toDateString(); // now shows correct 2025 weekday
 
     popupNames.textContent = getPeople(dateObj);
 
