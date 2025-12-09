@@ -32,8 +32,20 @@
       grid-template-columns: repeat(7, 1fr);
       padding: 20px;
       gap: 10px;
+      text-align: center;
     }
 
+    /* Calendar Day Headers */
+    .calendar-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 5px 0;
+      background-color: #1a1a1a;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* Days grid cells */
     .day {
       background: #1a1a1a;
       padding: 18px;
@@ -132,6 +144,17 @@
 
 <header>Winter Break Calendar</header>
 
+<!-- Weekday Headers (Mon, Tue, Wed, etc.) -->
+<div class="calendar-header">
+  <div>Mon</div>
+  <div>Tue</div>
+  <div>Wed</div>
+  <div>Thu</div>
+  <div>Fri</div>
+  <div>Sat</div>
+  <div>Sun</div>
+</div>
+
 <div class="calendar" id="calendar"></div>
 
 <div id="popup">
@@ -165,6 +188,7 @@
     const box = document.createElement("div");
     box.className = "day";
 
+    // Show full date label (month day, weekday)
     const label = d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
     box.textContent = label;
 
